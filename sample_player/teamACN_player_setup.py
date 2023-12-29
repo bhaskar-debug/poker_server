@@ -4,6 +4,7 @@ from model_output import get_model_output
 from pypokerengine.players import BasePokerPlayer
 from utils_teamACN.card_strategy import get_card_action
 from utils_teamACN.pre_flop_strategy import get_pre_flop_action
+from logger import logger  # noqa
 
 
 class AiPlayer(
@@ -13,9 +14,9 @@ class AiPlayer(
 
     def declare_action(self, valid_actions, hole_card, round_state):
         # valid_actions format => [fold_action_info, call_action_info, raise_action_info]
-        print(f"valid_actions: {valid_actions}")
-        print(f"hole_card: {hole_card}")
-        print(f"round_state: {round_state}")
+        logger.info(f"valid_actions: {valid_actions}")
+        logger.info(f"hole_card: {hole_card}")
+        logger.info(f"round_state: {round_state}")
         action = ""
         amount = 0
         action_info = valid_actions[2]
@@ -45,7 +46,7 @@ class AiPlayer(
         if action == "fold":
             action_info = valid_actions[0]
             amount = action_info["amount"]
-        print(f"action played: {action}, {amount}")
+        logger.info(f"action played: {action}, {amount}")
         return action, amount  # action returned here is sent to the poker engine
 
     def receive_game_start_message(self, game_info):

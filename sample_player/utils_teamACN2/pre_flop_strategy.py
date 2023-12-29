@@ -1,3 +1,6 @@
+from sample_player.logger import logger
+
+
 def estimate_win_probability_single_hand(hand) -> float:
     """Define hand groups and their corresponding probabilities
     (values are arbitrary)"""
@@ -12,7 +15,7 @@ def estimate_win_probability_single_hand(hand) -> float:
 
     # Convert cards to a string for easy comparison
     hand_str = "".join(str(card) for card in hand)
-    print(hand_str)
+    logger.info(hand_str)
     # Determine the hand group for the given hand
     hand_group = determine_hand_group_pre_flop(hand_str)
 
@@ -44,8 +47,8 @@ def get_pre_flop_action(hole_card, min_amount, max_amount):
 
     hand_card = [s[-1] for s in hole_card]
     pre_flop_probability = estimate_win_probability_single_hand(hand_card)
-    print(
-        f"Estimated Probability of Winning teamACN2 {hole_card}:", pre_flop_probability
+    logger.info(
+        f"Estimated Probability of Winning teamACN2 {hole_card}: {pre_flop_probability}"
     )
     if pre_flop_probability >= 0.8:
         raise_amount = min_amount <= max_amount * 0.3 <= max_amount

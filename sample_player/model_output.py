@@ -2,7 +2,7 @@ import pickle
 from statistics import mode
 
 import pandas as pd
-
+from logger import logger  # noqa
 from utils_teamACN.preprocess import pre_process_data
 
 root = "content"
@@ -31,7 +31,7 @@ def get_model_input(cards) -> list:
     char_mapping.update(suit)
     char_mapping.update(rank)
     model_input = []
-    print(cards)
+    logger.info(cards)
     for i in cards:
         for char in list(i):
             model_input.append(char_mapping[char])
@@ -80,13 +80,13 @@ def evaluate_poker_hand(hand, best_hand) -> int:
 
 def get_model_output(hands, model_path, team_name):
     model_input = get_model_input(hands)
-    print(model_input)
+    logger.info(model_input)
 
     best_hand = get_best_hand(model_input, model_path)
-    print(f"{team_name} Best hand:", best_hand[0])
+    logger.info(f"{team_name} Best hand: {best_hand[0]}")
 
     highest_rank = evaluate_poker_hand(model_input, best_hand)
-    print(f"{team_name} Highest Rank in Hand:", highest_rank)
+    logger.info(f"{team_name} Highest Rank in Hand: {highest_rank}")
     return best_hand[0], highest_rank
 
 
