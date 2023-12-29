@@ -5,6 +5,6 @@ max_round: 10
 small_blind: 10
 ai_players:
 - name: player_1
-  path: sample_player/random_player_setup.py
+  path: sample_player/teamACN_player_setup.py
 - name: player_2
-  path: sample_player/random_player_setup.py
+  path: sample_player/teamACN2_player_setup.py

@@ -1,6 +1,9 @@
 import random
 
+from model_output import get_model_output
 from pypokerengine.players import BasePokerPlayer
+from utils_teamACN.card_strategy import get_card_action
+from utils_teamACN.pre_flop_strategy import get_pre_flop_action
 
 
 class AiPlayer(
@@ -8,30 +11,32 @@ class AiPlayer(
 ):  # Do not forget to make parent class as "BasePokerPlayer"
     #  we define the logic to make an action through this method. (so this method would be the core of your AI)
 
-    def get_best_hands(cards):
-        suit = {"H": 1, "S": 2, "D": 3, "C": 4}
-        rank = {"A": 1, "J": 11, "Q": 13, "K": 13}
-
-        model_input = []
-
-        for i in cards:
-            a = i.split(",")
-
     def declare_action(self, valid_actions, hole_card, round_state):
         # valid_actions format => [fold_action_info, call_action_info, raise_action_info]
         print(f"valid_actions: {valid_actions}")
         print(f"hole_card: {hole_card}")
         print(f"round_state: {round_state}")
-
-        self.get_best_hands(hole_card + round_state["community_card"])
-
-        action = random.choice(valid_actions)["action"]
+        action = ""
+        amount = 0
+        action_info = valid_actions[2]
+        if round_state["street"] == "preflop":
+            action, amount = get_pre_flop_action(
+                hole_card, action_info["amount"]["min"], action_info["amount"]["max"]
+            )
+        else:
+            best_hand, highest_hand = get_model_output(
+                hole_card + round_state["community_card"],
+                "model/saved_model_teamACN.pkl",
+                "teamACN",
+            )
+            action, amount = get_card_action(
+                best_hand,
+                highest_hand,
+                action_info["amount"]["min"],
+                action_info["amount"]["max"],
+            )
 
         if action == "raise":
-            action_info = valid_actions[2]
-            amount = random.randint(
-                action_info["amount"]["min"], action_info["amount"]["max"]
-            )
             if amount == -1:
                 action = "call"
         if action == "call":
