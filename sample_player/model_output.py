@@ -1,9 +1,11 @@
 import pickle
+from itertools import combinations
 from statistics import mode
 
 import pandas as pd
-from logger import logger  # noqa
-from utils_teamACN.preprocess import pre_process_data
+
+from sample_player.logger import logger  # noqa
+from sample_player.utils_teamACN.preprocess import pre_process_data
 
 root = "content"
 data_path = f"{root}/data"
@@ -58,20 +60,20 @@ def get_best_hand(model_input, model_file_path=f"{root}/model/saved_model_teamAC
 
 def evaluate_poker_hand(hand, best_hand) -> int:
     # Sort the hand by rank
-    sorted_hand = sorted(hand[1::2])
+    sorted_hand = sorted(hand[1::2], reverse=True)
 
-    is_nothing = best_hand[0] == 0
-    is_1_pair = best_hand[0] == 1
-    is_2_pairs = best_hand[0] == 2
-    is_3_of_kind = best_hand[0] == 3
-    is_straight = best_hand[0] == 4
-    is_flush = best_hand[0] == 5
-    is_full_house = best_hand[0] == 6
-    is_4_of_kind = best_hand[0] == 7
-    is_straight_flush = best_hand[0] == 8
-    is_royal_flush = best_hand[0] == 9
+    is_nothing = best_hand == 0
+    is_1_pair = best_hand == 1
+    is_2_pairs = best_hand == 2
+    is_3_of_kind = best_hand == 3
+    is_straight = best_hand == 4
+    is_flush = best_hand == 5
+    is_full_house = best_hand == 6
+    is_4_of_kind = best_hand == 7
+    is_straight_flush = best_hand == 8
+    is_royal_flush = best_hand == 9
 
-    if is_nothing or is_straight or is_flush or is_straight_flush:
+    if is_nothing or is_straight or is_flush or is_straight_flush or is_royal_flush:
         return max(sorted_hand)
 
     if is_1_pair or is_2_pairs or is_3_of_kind or is_4_of_kind or is_full_house:
@@ -79,15 +81,40 @@ def evaluate_poker_hand(hand, best_hand) -> int:
 
 
 def get_model_output(hands, model_path, team_name):
-    model_input = get_model_input(hands)
-    logger.info(model_input)
+    best_hands = {}
+    best_hand = 0
+    highest_rank = 0
+    combination_length = 5
+    logger.info(hands)
+    # Generate all combinations of length 'combination_length'
+    all_combinations = list(combinations(hands, combination_length))
+    for combination in all_combinations:
+        input_list = list(combination)
 
-    best_hand = get_best_hand(model_input, model_path)
-    logger.info(f"{team_name} Best hand: {best_hand[0]}")
+        model_input = get_model_input(input_list)
+        logger.info(model_input)
 
-    highest_rank = evaluate_poker_hand(model_input, best_hand)
+        best_input_hand = get_best_hand(model_input, model_path)
+        logger.info(best_input_hand)
+        highest_rank = evaluate_poker_hand(model_input, best_input_hand)
+
+        # Check if the key exists in best_hands and if the current highest_rank is greater
+        if (
+            best_input_hand[0] in best_hands
+            and best_hands[best_input_hand[0]] < highest_rank
+        ):
+            best_hands[best_input_hand[0]] = highest_rank
+        elif best_input_hand[0] not in best_hands:
+            # If the key doesn't exist, add it to the dictionary
+            best_hands[best_input_hand[0]] = highest_rank
+
+    logger.info(f"Best hands: {best_hands}")
+    best_hand = max(best_hands)
+    highest_rank = best_hands[best_hand]
+    logger.info(f"{team_name} Best hand: {best_hand}")
     logger.info(f"{team_name} Highest Rank in Hand: {highest_rank}")
-    return best_hand[0], highest_rank
+
+    return best_hand, highest_rank
 
 
 if __name__ == "__main__":

@@ -1,10 +1,10 @@
 ante: 0
 blind_structure: null
-initial_stack: 1000
-max_round: 10
+initial_stack: 10000
+max_round: 20
 small_blind: 10
 ai_players:
-- name: player_1
+- name: player_teamACN
   path: sample_player/teamACN_player_setup.py
-- name: player_2
+- name: player_teamACN2
   path: sample_player/teamACN2_player_setup.py

@@ -50,13 +50,21 @@ def get_pre_flop_action(hole_card, min_amount, max_amount):
     logger.info(
         f"Estimated Probability of Winning teamACN2 {hole_card}: {pre_flop_probability}"
     )
-    if pre_flop_probability >= 0.8:
-        raise_amount = min_amount <= max_amount * 0.3 <= max_amount
+    if max_amount == min_amount:
+        return "call", min_amount
+    elif max_amount < min_amount:
+        return "fold", 0
+    elif pre_flop_probability >= 0.8:
+        raise_amount = max_amount * 0.3
+        if min_amount > raise_amount:
+            raise_amount = min_amount
         return "raise", raise_amount
     elif pre_flop_probability >= 0.7:
-        raise_amount = min_amount <= max_amount * 0.15 <= max_amount
+        raise_amount = max_amount * 0.2
+        if min_amount > raise_amount:
+            raise_amount = min_amount
         return "raise", raise_amount
     elif pre_flop_probability > 0.3 and pre_flop_probability < 0.7:
-        return "call", 0
+        return "call", min_amount
     else:
         return "fold", 0

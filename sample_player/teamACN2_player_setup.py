@@ -1,22 +1,18 @@
-import random
-
-from logger import logger  # noqa
-from model_output import get_model_output
 from pypokerengine.players import BasePokerPlayer
-from utils_teamACN2.card_strategy import get_card_action
-from utils_teamACN2.pre_flop_strategy import get_pre_flop_action
+
+from sample_player.logger import logger  # noqa
+from sample_player.model_output import get_model_output
+from sample_player.utils_teamACN2.flop_strategy import get_card_action
+from sample_player.utils_teamACN2.pre_flop_strategy import get_pre_flop_action
 
 
-class AiPlayer(
-    BasePokerPlayer
-):  # Do not forget to make parent class as "BasePokerPlayer"
-    #  we define the logic to make an action through this method. (so this method would be the core of your AI)
-
+class AiPlayer(BasePokerPlayer):
     def declare_action(self, valid_actions, hole_card, round_state):
         # valid_actions format => [fold_action_info, call_action_info, raise_action_info]
-        logger.info(f"valid_actions: {valid_actions}")
-        logger.info(f"hole_card: {hole_card}")
-        logger.info(f"round_state: {round_state}")
+        logger.info(f"Round: {round_state['round_count']}")
+        logger.info(f"valid_actions teamACN2: {valid_actions}")
+        logger.info(f"hole_card teamACN2: {hole_card}")
+        logger.info(f"round_state teamACN2: {round_state}")
         action = ""
         amount = 0
         action_info = valid_actions[2]
@@ -46,7 +42,7 @@ class AiPlayer(
         if action == "fold":
             action_info = valid_actions[0]
             amount = action_info["amount"]
-        logger.info(f"action played: {action}, {amount}")
+        logger.info(f"action played teamACN2: {action}, {amount}")
         return action, amount  # action returned here is sent to the poker engine
 
     def receive_game_start_message(self, game_info):
