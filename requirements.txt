@@ -2,3 +2,8 @@ pypokerengine
 tornado
 click
 pyyaml
+pandas
+seaborn
+scikit-learn
+xgboost
+imblearn

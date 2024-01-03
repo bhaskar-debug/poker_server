@@ -48,7 +48,7 @@ def get_pre_flop_action(hole_card, min_amount, max_amount):
     hand_card = [s[-1] for s in hole_card]
     pre_flop_probability = estimate_win_probability_single_hand(hand_card)
     logger.info(
-        f"Estimated Probability of Winning teamACN2 {hole_card}: {pre_flop_probability}"
+        f"Estimated Probability of Winning teamACN2{hole_card}: {pre_flop_probability}"
     )
     if max_amount == min_amount:
         return "call", min_amount

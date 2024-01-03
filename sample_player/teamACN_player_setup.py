@@ -23,7 +23,6 @@ class AiPlayer(BasePokerPlayer):
         else:
             best_hand, highest_hand = get_model_output(
                 hole_card + round_state["community_card"],
-                "model/saved_model_teamACN.pkl",
                 "teamACN",
             )
             action, amount = get_card_action(

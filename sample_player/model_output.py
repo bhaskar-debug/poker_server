@@ -80,7 +80,9 @@ def evaluate_poker_hand(hand, best_hand) -> int:
         return mode(sorted_hand)
 
 
-def get_model_output(hands, model_path, team_name):
+def get_model_output(
+    hands, team_name, model_file_path=f"{root}/model/saved_model_teamACN.pkl"
+):
     best_hands = {}
     best_hand = 0
     highest_rank = 0
@@ -94,7 +96,7 @@ def get_model_output(hands, model_path, team_name):
         model_input = get_model_input(input_list)
         logger.info(model_input)
 
-        best_input_hand = get_best_hand(model_input, model_path)
+        best_input_hand = get_best_hand(model_input, model_file_path)
         logger.info(best_input_hand)
         highest_rank = evaluate_poker_hand(model_input, best_input_hand)
 
