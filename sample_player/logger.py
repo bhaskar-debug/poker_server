@@ -18,7 +18,7 @@ def get_root_logger(logger_name, filename=None):
             # structlog.processors.StackInfoRenderer(),
             # structlog.dev.set_exc_info,
             structlog.processors.TimeStamper(fmt="iso"),
-            structlog.processors.EventRenamer("msg"),
+            # structlog.processors.EventRenamer("msg"),
             structlog.processors.JSONRenderer(),
         ],
         logger_factory=structlog.WriteLoggerFactory(
