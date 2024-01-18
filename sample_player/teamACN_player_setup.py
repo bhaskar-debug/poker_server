@@ -9,7 +9,7 @@ from sample_player.utils_teamACN.pre_flop_strategy import get_pre_flop_action
 class AiPlayer(BasePokerPlayer):
     def declare_action(self, valid_actions, hole_card, round_state):
         # valid_actions format => [fold_action_info, call_action_info, raise_action_info]
-        logger.info(f"Round: {round_state['round_count']}")
+        logger.info(f"Round: {round_state['round_count']} , teamACN")
         logger.info(f"valid_actions teamACN: {valid_actions}")
         logger.info(f"hole_card teamACN: {hole_card}")
         logger.info(f"round_state teamACN: {round_state}")

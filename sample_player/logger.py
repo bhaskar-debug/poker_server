@@ -1,6 +1,7 @@
 import logging
 import os
 from datetime import datetime
+import structlog
 
 
 def get_root_logger(logger_name, filename=None):
@@ -9,7 +10,7 @@ def get_root_logger(logger_name, filename=None):
     debug = os.environ.get("ENV", "development") == "development"
     logger.setLevel(logging.DEBUG if debug else logging.INFO)
 
-    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+    formatter = logging.Formatter("%(message)s")
 
     ch = logging.StreamHandler()
     ch.setFormatter(formatter)

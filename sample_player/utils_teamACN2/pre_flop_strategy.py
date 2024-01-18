@@ -15,7 +15,7 @@ def estimate_win_probability_single_hand(hand) -> float:
 
     # Convert cards to a string for easy comparison
     hand_str = "".join(str(card) for card in hand)
-    logger.info(hand_str)
+    # logger.info(hand_str)
     # Determine the hand group for the given hand
     hand_group = determine_hand_group_pre_flop(hand_str)
 
