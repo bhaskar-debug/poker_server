@@ -43,6 +43,7 @@ def get_model_input(cards) -> list:
     char_mapping.update(suit)
     char_mapping.update(rank)
     model_input = []
+    print(cards)
     logger.info(cards)
     for i in cards:
         for char in list(i):
@@ -144,6 +145,7 @@ def get_model_output(
     best_hand = 0
     highest_rank = 0
     combination_length = 5
+    print(hands)
     logger.info(hands)
     # Generate all combinations of length 'combination_length'
     all_combinations = list(combinations(hands, combination_length))
@@ -151,10 +153,13 @@ def get_model_output(
         input_list = list(combination)
 
         model_input = get_model_input(input_list)
+        print(model_input)
         logger.info(model_input)
 
         best_input_hand = get_best_hand(model_input, model_file_path)
         logger.info(best_input_hand)
+        print(best_input_hand)
+
         highest_rank = evaluate_poker_hand(model_input, best_input_hand)
 
         # Check if the key exists in best_hands and if the current highest_rank is greater
@@ -166,12 +171,18 @@ def get_model_output(
         elif best_input_hand[0] not in best_hands:
             # If the key doesn't exist, add it to the dictionary
             best_hands[best_input_hand[0]] = highest_rank
+    msg_best_hands = f"Best hands: {best_hands}"
+    print(msg_best_hands)
+    logger.info(msg_best_hands)
 
-    logger.info(f"Best hands: {best_hands}")
     best_hand = max(best_hands)
     highest_rank = best_hands[best_hand]
-    logger.info(f"{team_name} Best hand: {best_hand}")
-    logger.info(f"{team_name} Highest Rank in Hand: {highest_rank}")
+    msg_best_hand = f"{team_name} Best hand: {best_hand}"
+    print(msg_best_hand)
+    logger.info(msg_best_hand)
+    msg_highest_rank = f"{team_name} Highest Rank in Hand: {highest_rank}"
+    print(msg_highest_rank)
+    logger.info(msg_highest_rank)
 
     return best_hand, highest_rank
 
