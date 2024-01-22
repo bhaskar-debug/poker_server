@@ -24,6 +24,7 @@ class AiPlayer(BasePokerPlayer):
             best_hand, highest_hand = get_model_output(
                 hole_card + round_state["community_card"],
                 "teamACN2",
+                model_file_path="content/model/saved_model_teamACN.pkl",
             )
             action, amount = get_card_action(
                 best_hand,
