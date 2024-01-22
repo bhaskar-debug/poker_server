@@ -4,6 +4,7 @@ from sample_player.logger import logger  # noqa
 from sample_player.model_output import get_model_output
 from sample_player.utils_teamACN2.flop_strategy import get_card_action
 from sample_player.utils_teamACN2.pre_flop_strategy import get_pre_flop_action
+from sample_player.utils_teamACN.preprocess import pre_process_data
 
 
 class AiPlayer(BasePokerPlayer):
@@ -24,6 +25,7 @@ class AiPlayer(BasePokerPlayer):
             best_hand, highest_hand = get_model_output(
                 hole_card + round_state["community_card"],
                 "teamACN2",
+                pre_process_data,
                 model_file_path="content/model/saved_model_teamACN.pkl",
             )
             action, amount = get_card_action(

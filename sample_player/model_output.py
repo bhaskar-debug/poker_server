@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 
 from sample_player.logger import logger  # noqa
-from sample_player.utils_teamACN.preprocess import pre_process_data
 
 root = "content"
 data_path = f"{root}/data"
@@ -54,6 +53,7 @@ def get_model_input(cards) -> list:
 
 def get_best_hand(
     model_input,
+    pre_process_data,
     model_file_path=f"{root}/model/saved_model_teamACN.pkl",
     model_name="model",
 ):
@@ -127,7 +127,10 @@ def evaluate_poker_hand(hand, best_hand) -> int:
 
 
 def get_model_output(
-    hands, team_name, model_file_path=f"{root}/model/saved_model_teamACN.pkl"
+    hands,
+    team_name,
+    pre_process_data,
+    model_file_path=f"{root}/model/saved_model_teamACN.pkl",
 ):
     """
     Identifies the best possible poker hand and its rank from a collection of hands using a model.
@@ -156,7 +159,7 @@ def get_model_output(
         # print(model_input)
         # logger.info(model_input)
 
-        best_input_hand = get_best_hand(model_input, model_file_path)
+        best_input_hand = get_best_hand(model_input, pre_process_data, model_file_path)
         # logger.info(best_input_hand)
         # print(best_input_hand)
 
