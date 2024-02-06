@@ -23,7 +23,7 @@ def get_model_input(cards) -> list:
     """
     suit = {"H": 1, "S": 2, "D": 3, "C": 4}
     rank = {
-        "A": 1,
+        "A": 14,
         "2": 2,
         "3": 3,
         "4": 4,
@@ -188,7 +188,8 @@ def get_model_output(
     # logger.info(msg_highest_rank)
 
     logger.info("flop_strategy", best_hand=best_hand, highest_rank=highest_rank)
-
+    if highest_rank == 14:
+        highest_rank = 1
     return best_hand, highest_rank
 
 
